@@ -1,6 +1,5 @@
-package integrify.inventory.domain.repositories.orderItem;
+package integrify.inventory.domain.model;
 
-import integrify.inventory.domain.repositories.order.Order;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,18 +13,19 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItem {
+public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(nullable = false)
-    private int quantity;
-
-    @Column(nullable = false)
     private UUID productId;
 
+    @Column(nullable = false)
+    private int quantity;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @JoinColumn(name = "supplier_id")
+    private Supplier supplier;
 }
+

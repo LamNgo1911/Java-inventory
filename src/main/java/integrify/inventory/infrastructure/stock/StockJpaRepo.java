@@ -1,6 +1,6 @@
 package integrify.inventory.infrastructure.stock;
 
-import integrify.inventory.domain.repositories.stock.Stock;
+import integrify.inventory.domain.model.Stock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

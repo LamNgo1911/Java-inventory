@@ -1,8 +1,8 @@
 package integrify.inventory.application.dtos.order;
 
 import integrify.inventory.application.dtos.orderItem.OrderItemReadDto;
-import integrify.inventory.domain.repositories.order.Order;
-import integrify.inventory.domain.repositories.orderItem.OrderItem;
+import integrify.inventory.domain.model.Order;
+import integrify.inventory.domain.model.OrderItem;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

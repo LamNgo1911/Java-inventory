@@ -1,7 +1,7 @@
 package integrify.inventory.infrastructure.supplier;
 
-import integrify.inventory.domain.repositories.supplier.ISupplierRepo;
-import integrify.inventory.domain.repositories.supplier.Supplier;
+import integrify.inventory.domain.repository.ISupplierRepo;
+import integrify.inventory.domain.model.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
-package integrify.inventory.domain.services;
+package integrify.inventory.application.services.orderItem;
 
-import integrify.inventory.domain.repositories.orderItem.OrderItem;
+import integrify.inventory.domain.model.OrderItem;
 
 import java.util.List;
 

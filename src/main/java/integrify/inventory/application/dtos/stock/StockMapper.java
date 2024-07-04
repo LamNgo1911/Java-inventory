@@ -1,6 +1,6 @@
 package integrify.inventory.application.dtos.stock;
 
-import integrify.inventory.domain.repositories.stock.Stock;
+import integrify.inventory.domain.model.Stock;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

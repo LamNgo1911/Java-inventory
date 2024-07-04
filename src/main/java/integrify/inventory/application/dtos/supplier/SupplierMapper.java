@@ -1,6 +1,6 @@
 package integrify.inventory.application.dtos.supplier;
 
-import integrify.inventory.domain.repositories.supplier.Supplier;
+import integrify.inventory.domain.model.Supplier;
 
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

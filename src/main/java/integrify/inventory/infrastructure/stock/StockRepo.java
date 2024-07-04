@@ -1,7 +1,7 @@
 package integrify.inventory.infrastructure.stock;
 
-import integrify.inventory.domain.repositories.stock.IStockRepo;
-import integrify.inventory.domain.repositories.stock.Stock;
+import integrify.inventory.domain.repository.IStockRepo;
+import integrify.inventory.domain.model.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

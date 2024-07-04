@@ -1,6 +1,6 @@
 package integrify.inventory.infrastructure.orderItem;
 
-import integrify.inventory.domain.repositories.orderItem.OrderItem;
+import integrify.inventory.domain.model.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

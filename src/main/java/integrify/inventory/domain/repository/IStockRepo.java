@@ -1,6 +1,6 @@
-package integrify.inventory.domain.repositories.stock;
+package integrify.inventory.domain.repository;
 
-import integrify.inventory.domain.repositories.supplier.Supplier;
+import integrify.inventory.domain.model.Stock;
 
 import java.util.List;
 import java.util.Optional;

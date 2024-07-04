@@ -1,7 +1,7 @@
-package integrify.inventory.domain.services;
+package integrify.inventory.application.services.stock;
 
-import integrify.inventory.domain.repositories.stock.Stock;
-import integrify.inventory.domain.repositories.supplier.Supplier;
+import integrify.inventory.domain.model.Stock;
+import integrify.inventory.domain.model.Supplier;
 
 import java.util.List;
 

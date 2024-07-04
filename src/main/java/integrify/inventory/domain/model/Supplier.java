@@ -1,6 +1,5 @@
-package integrify.inventory.domain.repositories.supplier;
+package integrify.inventory.domain.model;
 
-import integrify.inventory.domain.repositories.stock.Stock;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +23,7 @@ public class Supplier {
     @Column(columnDefinition = "VARCHAR(100)",nullable = false)
     private String name;
 
-    @Column(columnDefinition = "VARCHAR(100)", nullable = false)
+    @Column(columnDefinition = "VARCHAR(100)", nullable = false, unique = true)
     private String email;
 
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

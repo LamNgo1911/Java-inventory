@@ -1,7 +1,7 @@
 package integrify.inventory.infrastructure.orderItem;
 
-import integrify.inventory.domain.repositories.orderItem.IOrderItemRepo;
-import integrify.inventory.domain.repositories.orderItem.OrderItem;
+import integrify.inventory.domain.repository.IOrderItemRepo;
+import integrify.inventory.domain.model.OrderItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

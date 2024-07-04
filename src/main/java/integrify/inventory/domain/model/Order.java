@@ -1,7 +1,5 @@
-package integrify.inventory.domain.repositories.order;
+package integrify.inventory.domain.model;
 
-import integrify.inventory.domain.repositories.orderItem.OrderItem;
-import integrify.inventory.domain.repositories.supplier.Supplier;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
