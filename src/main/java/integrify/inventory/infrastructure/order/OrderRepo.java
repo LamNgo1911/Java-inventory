@@ -1,8 +1,11 @@
 package integrify.inventory.infrastructure.order;
 
+import integrify.inventory.application.shared.OffsetPage;
 import integrify.inventory.domain.repository.IOrderRepo;
 import integrify.inventory.domain.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,13 +24,17 @@ public class OrderRepo implements IOrderRepo {
     }
 
     @Override
+    public void saveAll(List<Order> orders) {_orderJpaRepo.saveAll(orders);
+    }
+
+    @Override
     public Optional<Order> findById(Long id) {
         return _orderJpaRepo.findById(id);
     }
 
     @Override
-    public List<Order> findAll() {
-        return _orderJpaRepo.findAll();
+    public Page<Order> findAll(OffsetPage pageable) {
+        return _orderJpaRepo.findAll(pageable);
     }
 
     @Override

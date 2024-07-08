@@ -1,6 +1,8 @@
 package integrify.inventory.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,9 +23,12 @@ public class Supplier {
     private UUID id;
 
     @Column(columnDefinition = "VARCHAR(100)",nullable = false)
+    @NotBlank(message = "Name must not be blank.")
     private String name;
 
     @Column(columnDefinition = "VARCHAR(100)", nullable = false, unique = true)
+    @NotBlank(message = "Email must not be blank.")
+    @Email(message = "Invalid email format.")
     private String email;
 
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

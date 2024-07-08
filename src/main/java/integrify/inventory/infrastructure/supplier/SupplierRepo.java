@@ -1,8 +1,10 @@
 package integrify.inventory.infrastructure.supplier;
 
+import integrify.inventory.application.shared.OffsetPage;
 import integrify.inventory.domain.repository.ISupplierRepo;
 import integrify.inventory.domain.model.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,12 +26,17 @@ public class SupplierRepo implements ISupplierRepo {
     }
 
     @Override
-    public List<Supplier> findAll() {
-        return _supplierJpaRepo.findAll();
+    public Page<Supplier> findAll(OffsetPage pageable) {
+        return _supplierJpaRepo.findAll(pageable);
     }
 
     @Override
     public void deleteById(Long id) {
         _supplierJpaRepo.deleteById(id);
+    }
+
+    @Override
+    public Optional<Supplier> findByEmail(String email) {
+        return _supplierJpaRepo.findByEmail(email);
     }
 }

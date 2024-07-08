@@ -1,4 +1,4 @@
-package integrify.inventory.security;
+package integrify.inventory.presentation;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,7 +20,7 @@ import java.util.Collections;
 public class ApiKeyAuthFilter extends OncePerRequestFilter {
 
     @Autowired
-    @Value("SECRET_API_KEY")
+    @Value("${SECRET_API_KEY}")
     private String SECRET_API_KEY;
 
     @Override

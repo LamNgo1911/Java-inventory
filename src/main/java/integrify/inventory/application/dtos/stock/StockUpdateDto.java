@@ -1,5 +1,7 @@
 package integrify.inventory.application.dtos.stock;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +14,13 @@ import java.util.UUID;
 @Getter
 @Setter
 public class StockUpdateDto {
+    @NotNull
     private UUID productId;
+
+    @NotNull
+    @Min(value = 0)
     private int quantity;
+
+    @NotNull
     private UUID supplierId;
 }
