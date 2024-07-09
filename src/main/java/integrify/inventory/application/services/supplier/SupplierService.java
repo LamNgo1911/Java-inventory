@@ -18,13 +18,17 @@ import jakarta.validation.ValidationException;
 import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Service
 public class SupplierService implements ISupplierService{
+    @Autowired
     private Validator validator;
 
     @Autowired
@@ -35,6 +39,7 @@ public class SupplierService implements ISupplierService{
 
     @Override
     public SupplierReadDto createSupplier(SupplierCreateDto supplierCreateDto) {
+
         Set<ConstraintViolation<SupplierCreateDto>> violations = validator.validate(supplierCreateDto);
         if (!violations.isEmpty()) {
             // Handle validation errors by throwing an exception
@@ -48,12 +53,13 @@ public class SupplierService implements ISupplierService{
         }
 
         Supplier newSupplier = _supplierMapper.toSupplier(supplierCreateDto);
+        _supplierRepo.save(newSupplier);
 
         return _supplierMapper.toSupplierReadDto(newSupplier);
     }
 
     @Override
-    public SupplierReadDto updateSupplier(Long id, SupplierUpdateDto supplierDetails) {
+    public SupplierReadDto updateSupplier(UUID id, SupplierUpdateDto supplierDetails) {
         Set<ConstraintViolation<SupplierUpdateDto>> violations = validator.validate(supplierDetails);
         if (!violations.isEmpty()) {
             // Handle validation errors by throwing an exception
@@ -76,7 +82,7 @@ public class SupplierService implements ISupplierService{
         Page<Supplier> suppliers = _supplierRepo.findAll(pageable);
 
         List<SupplierReadDto> supplierReadDto = suppliers.stream().map(supplier -> _supplierMapper.toSupplierReadDto(supplier)).collect(Collectors.toList());
-
+        System.out.println();
         return new PaginationPage<SupplierReadDto>()
                 .setLimit(suppliers.getSize())
                 .setTotalRecords(suppliers.getTotalElements())
@@ -85,7 +91,7 @@ public class SupplierService implements ISupplierService{
     }
 
     @Override
-    public SupplierReadDto getSupplierById(Long id) {
+    public SupplierReadDto getSupplierById(UUID id) {
         Supplier supplier = _supplierRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Supplier not found with ID: " + id));
 
@@ -93,7 +99,7 @@ public class SupplierService implements ISupplierService{
     }
 
     @Override
-    public void deleteSupplier(Long id) {
+    public void deleteSupplier(UUID id) {
         Supplier supplier = _supplierRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Supplier not found with ID: " + id));
 

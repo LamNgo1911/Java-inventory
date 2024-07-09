@@ -22,7 +22,7 @@ public class StockRepo implements IStockRepo {
     }
 
     @Override
-    public Optional<Stock> findById(Long id) {
+    public Optional<Stock> findById(UUID id) {
         return _stockJpaRepo.findById(id);
     }
 
@@ -32,7 +32,7 @@ public class StockRepo implements IStockRepo {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
         _stockJpaRepo.deleteById(id);
     }
 

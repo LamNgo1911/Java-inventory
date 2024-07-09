@@ -16,8 +16,4 @@ import java.util.UUID;
 public class SupplierUpdateDto {
     @NotBlank
     private String name;
-
-    @NotBlank
-    @Email
-    private String email;
 }

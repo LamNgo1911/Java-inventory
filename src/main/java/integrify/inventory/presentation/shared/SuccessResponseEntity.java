@@ -1,5 +1,6 @@
 package integrify.inventory.presentation.shared;
 
+import integrify.inventory.application.shared.PaginationPage;
 import lombok.*;
 
 import java.util.List;

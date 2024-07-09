@@ -4,14 +4,13 @@ import integrify.inventory.application.dtos.order.OrderCreateDto;
 import integrify.inventory.application.dtos.order.OrderReadDto;
 import integrify.inventory.application.shared.PaginationPage;
 import integrify.inventory.domain.OrderStatusEnum;
-import integrify.inventory.domain.model.Order;
 
-import java.util.List;
+import java.util.UUID;
 
 public interface IOrderService {
     public OrderReadDto createOrder(OrderCreateDto orderCreateDto);
-    public OrderReadDto updateOrderStatus(Long id, OrderStatusEnum status);
+    public OrderReadDto updateOrderStatus(UUID id, OrderStatusEnum status);
     public PaginationPage<OrderReadDto> getAllOrders(int limit, int offset);
-    public OrderReadDto getOrderById(Long id);
-    public void cancelOrder(Long id);
+    public OrderReadDto getOrderById(UUID id);
+    public void cancelOrder(UUID id);
 }

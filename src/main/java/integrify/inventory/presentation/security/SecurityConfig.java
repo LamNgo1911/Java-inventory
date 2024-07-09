@@ -1,7 +1,6 @@
-package integrify.inventory.infrastructure.config;
+package integrify.inventory.presentation.security;
 
 
-import integrify.inventory.presentation.ApiKeyAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;

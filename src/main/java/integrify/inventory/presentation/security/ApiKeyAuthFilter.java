@@ -1,4 +1,4 @@
-package integrify.inventory.presentation;
+package integrify.inventory.presentation.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

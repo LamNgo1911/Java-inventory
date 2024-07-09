@@ -28,7 +28,7 @@ public class Stock {
     @Min(value = 0, message = "Quantity cannot be less than 0")
     private int quantity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 }

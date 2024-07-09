@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public interface IStockRepo {
     Stock save(Stock stock);
-    Optional<Stock> findById(Long id);
+    Optional<Stock> findById(UUID id);
     Page<Stock> findAll(OffsetPage pageable);
-    void deleteById(Long id);
+    void deleteById(UUID id);
     Optional<Stock> findByProductId(UUID productId);
     Optional<Page<Stock>> findAllStockBySupplierId(UUID supplierId, OffsetPage pageable);
 }

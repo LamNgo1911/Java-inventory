@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Repository
@@ -28,7 +29,7 @@ public class OrderRepo implements IOrderRepo {
     }
 
     @Override
-    public Optional<Order> findById(Long id) {
+    public Optional<Order> findById(UUID id) {
         return _orderJpaRepo.findById(id);
     }
 
@@ -38,7 +39,7 @@ public class OrderRepo implements IOrderRepo {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
         _orderJpaRepo.deleteById(id);
     }
 }

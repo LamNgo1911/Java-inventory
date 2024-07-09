@@ -49,10 +49,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFound.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponseEntity> handleResourceNotFoundException(Exception ex) {
-        ErrorResponseEntity errorResponseEntity = new ErrorResponseEntity();
-        ErrorEntity errorEntity = new ErrorEntity();
-        errorEntity.setMessage(ex.getMessage());
-        errorResponseEntity.getErrors().add(errorEntity);
+        ErrorEntity errorEntity = ErrorEntity.builder()
+                .field("NOT_FOUND")
+                .message(ex.getMessage())
+                .build();
+
+        ErrorResponseEntity errorResponseEntity = ErrorResponseEntity.builder()
+                .errors(List.of(errorEntity))
+                .build();
+
 
         return new ResponseEntity<>(errorResponseEntity, HttpStatus.NOT_FOUND);
     }
@@ -60,10 +65,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponseEntity> handleBadRequestException(Exception ex) {
-        ErrorResponseEntity errorResponseEntity = new ErrorResponseEntity();
-        ErrorEntity errorEntity = new ErrorEntity();
-        errorEntity.setMessage(ex.getMessage());
-        errorResponseEntity.getErrors().add(errorEntity);
+        ErrorEntity errorEntity = ErrorEntity.builder()
+                .field("BAD_REQUEST")
+                .message(ex.getMessage())
+                .build();
+
+        ErrorResponseEntity errorResponseEntity = ErrorResponseEntity.builder()
+                .errors(List.of(errorEntity))
+                .build();
 
         return new ResponseEntity<>(errorResponseEntity, HttpStatus.BAD_REQUEST);
     }
@@ -71,10 +80,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<ErrorResponseEntity> handleForbiddenException(Exception ex) {
-        ErrorResponseEntity errorResponseEntity = new ErrorResponseEntity();
-        ErrorEntity errorEntity = new ErrorEntity();
-        errorEntity.setMessage(ex.getMessage());
-        errorResponseEntity.getErrors().add(errorEntity);
+        ErrorEntity errorEntity = ErrorEntity.builder()
+                .field("FORBIDDEN")
+                .message(ex.getMessage())
+                .build();
+
+        ErrorResponseEntity errorResponseEntity = ErrorResponseEntity.builder()
+                .errors(List.of(errorEntity))
+                .build();
 
         return new ResponseEntity<>(errorResponseEntity, HttpStatus.FORBIDDEN);
     }
@@ -82,10 +95,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<ErrorResponseEntity> handleUnauthorizedException(Exception ex) {
-        ErrorResponseEntity errorResponseEntity = new ErrorResponseEntity();
-        ErrorEntity errorEntity = new ErrorEntity();
-        errorEntity.setMessage(ex.getMessage());
-        errorResponseEntity.getErrors().add(errorEntity);
+        ErrorEntity errorEntity = ErrorEntity.builder()
+                .field("UNAUTHORIZED")
+                .message(ex.getMessage())
+                .build();
+
+        ErrorResponseEntity errorResponseEntity = ErrorResponseEntity.builder()
+                .errors(List.of(errorEntity))
+                .build();
 
         return new ResponseEntity<>(errorResponseEntity, HttpStatus.UNAUTHORIZED);
     }
@@ -93,10 +110,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OutOfStockException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponseEntity> handleOutOfStockException(Exception ex) {
-        ErrorResponseEntity errorResponseEntity = new ErrorResponseEntity();
-        ErrorEntity errorEntity = new ErrorEntity();
-        errorEntity.setMessage(ex.getMessage());
-        errorResponseEntity.getErrors().add(errorEntity);
+        ErrorEntity errorEntity = ErrorEntity.builder()
+                .field("OutOfStock")
+                .message(ex.getMessage())
+                .build();
+
+        ErrorResponseEntity errorResponseEntity = ErrorResponseEntity.builder()
+                .errors(List.of(errorEntity))
+                .build();
 
         return new ResponseEntity<>(errorResponseEntity, HttpStatus.BAD_REQUEST);
     }

@@ -35,7 +35,9 @@ import java.util.stream.Collectors;
 public class OrderService implements IOrderService {
     @Autowired
     private IOrderRepo _orderRepo;
+    @Autowired
     private IOrderItemRepo _orderItemRepo;
+    @Autowired
     private IStockRepo _stockRepo;
 
     @Autowired
@@ -44,6 +46,7 @@ public class OrderService implements IOrderService {
     @Autowired
     OrderItemMapper _orderItemMapper;
 
+    @Autowired
     private Validator validator;
 
     @Override
@@ -76,16 +79,25 @@ public class OrderService implements IOrderService {
         }
 
         order.setOrderItems(orderItems);
-
         // Save the order and order items to the database
+        // Update stock after
+
         _orderRepo.save(order);
         _orderItemRepo.saveAll(orderItems);
+
+        // Update stock after making an order
+        for (OrderItem orderItem : order.getOrderItems()){
+            Stock stock = _stockRepo.findByProductId(orderItem.getProductId()).orElseThrow(() -> new ResourceNotFound("OrderItem with ID: " + orderItem.getId() + " not found in inventory."));
+
+            stock.setQuantity(stock.getQuantity() - orderItem.getQuantity());
+            _stockRepo.save(stock);
+        }
 
         return _orderMapper.toOrderReadDto(order);
     }
 
     @Override
-    public OrderReadDto updateOrderStatus(Long id, OrderStatusEnum status) {
+    public OrderReadDto updateOrderStatus(UUID id, OrderStatusEnum status) {
         Order order = _orderRepo.findById(id).orElseThrow(() -> new ResourceNotFound("Order not found with ID: " + id));
         order.setStatus(status);
 
@@ -109,14 +121,14 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public OrderReadDto getOrderById(Long id) {
+    public OrderReadDto getOrderById(UUID id) {
         Order order = _orderRepo.findById(id).orElseThrow(() -> new ResourceNotFound("Order not found with ID: " + id));
 
         return _orderMapper.toOrderReadDto(order);
     }
 
     @Override
-    public void cancelOrder(Long id) {
+    public void cancelOrder(UUID id) {
         Order order = _orderRepo.findById(id).orElseThrow(() -> new ResourceNotFound("Order not found with ID: " + id));
 
         // Delete in Database

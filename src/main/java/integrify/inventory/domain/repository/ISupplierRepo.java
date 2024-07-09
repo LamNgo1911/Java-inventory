@@ -6,11 +6,12 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface ISupplierRepo {
     Supplier save(Supplier supplier);
-    Optional<Supplier> findById(Long id);
+    Optional<Supplier> findById(UUID id);
     Page<Supplier> findAll(OffsetPage pageable);
-    void deleteById(Long id);
+    void deleteById(UUID id);
     Optional<Supplier> findByEmail(String email);
 }

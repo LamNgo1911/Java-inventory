@@ -30,7 +30,4 @@ public class Supplier {
     @NotBlank(message = "Email must not be blank.")
     @Email(message = "Invalid email format.")
     private String email;
-
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Stock> stocks;
 }
