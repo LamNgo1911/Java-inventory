@@ -5,6 +5,7 @@ import integrify.inventory.domain.OrderStatusEnum;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,12 +29,12 @@ public class OrderReadDto {
     @NotNull
     private Date orderDate;
 
-    @NotEmpty
+    @NotNull
     @Enumerated(EnumType.STRING)
     private OrderStatusEnum status;
 
-    @Valid
-    private Set<OrderItemReadDto> orderItems;
+    @NotNull
+    private List<OrderItemReadDto> orderItemReadDtoList;
 
     @NotNull
     private UUID supplierId;

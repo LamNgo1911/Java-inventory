@@ -22,6 +22,7 @@ public class GlobalExceptionHandler {
         ErrorResponseEntity errorResponseEntity = new ErrorResponseEntity();
         ErrorEntity errorEntity = new ErrorEntity();
         errorEntity.setMessage("An unexpected error occurred: " + ex.getMessage());
+        errorEntity.setField("Unknown");
         List<ErrorEntity> errors = new ArrayList<>();
         errors.add(errorEntity);
         errorResponseEntity.setErrors(errors);
@@ -50,7 +51,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponseEntity> handleResourceNotFoundException(Exception ex) {
         ErrorEntity errorEntity = ErrorEntity.builder()
-                .field("NOT_FOUND")
+                .field("Resource")
                 .message(ex.getMessage())
                 .build();
 
@@ -66,7 +67,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponseEntity> handleBadRequestException(Exception ex) {
         ErrorEntity errorEntity = ErrorEntity.builder()
-                .field("BAD_REQUEST")
+                .field("Request")
                 .message(ex.getMessage())
                 .build();
 
@@ -81,7 +82,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<ErrorResponseEntity> handleForbiddenException(Exception ex) {
         ErrorEntity errorEntity = ErrorEntity.builder()
-                .field("FORBIDDEN")
+                .field("Forbidden")
                 .message(ex.getMessage())
                 .build();
 
@@ -96,7 +97,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<ErrorResponseEntity> handleUnauthorizedException(Exception ex) {
         ErrorEntity errorEntity = ErrorEntity.builder()
-                .field("UNAUTHORIZED")
+                .field("Authentication")
                 .message(ex.getMessage())
                 .build();
 
@@ -111,7 +112,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponseEntity> handleOutOfStockException(Exception ex) {
         ErrorEntity errorEntity = ErrorEntity.builder()
-                .field("OutOfStock")
+                .field("Quantity")
                 .message(ex.getMessage())
                 .build();
 

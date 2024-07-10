@@ -14,4 +14,5 @@ import java.util.UUID;
 public interface StockJpaRepo extends JpaRepository<Stock, UUID> {
     public Optional<Stock> findByProductId(UUID productId);
     public  Optional<Page<Stock>> findAllStockBySupplierId(UUID SupplierId, Pageable pageable);
+    public  List<Stock> findAllBySupplierId(UUID supplierId);
 }

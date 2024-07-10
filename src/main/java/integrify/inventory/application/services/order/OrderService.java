@@ -18,7 +18,6 @@ import integrify.inventory.domain.repository.IOrderRepo;
 import integrify.inventory.domain.repository.IStockRepo;
 import integrify.inventory.presentation.errorHandlers.OutOfStockException;
 import integrify.inventory.presentation.errorHandlers.ResourceNotFound;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ValidationException;
 import jakarta.validation.Validator;
@@ -60,36 +59,61 @@ public class OrderService implements IOrderService {
         }
 
         Order order = _orderMapper.toOrder(orderCreateDto);
-
+        order.setOrderDate(new Date());
         // Create order items
-        Set<OrderItemCreateDto> orderItemCreateDtos = orderCreateDto.getOrderItems();
-        Set<OrderItem> orderItems = new HashSet<>();
+        List<OrderItemCreateDto> orderItemCreateDtos = orderCreateDto.getOrderItemCreateDtoList();
+
+        List<OrderItem> orderItems = new ArrayList<>();
 
         for (OrderItemCreateDto orderItemCreateDto : orderItemCreateDtos) {
+
             OrderItem orderItem = _orderItemMapper.toOrderItem(orderItemCreateDto);
             orderItem.setOrder(order);
 
-            Stock stock = _stockRepo.findByProductId(orderItem.getProductId()).orElseThrow(() -> new ResourceNotFound("OrderItem with ID: " + orderItem.getId() + " not found in inventory."));
+            //  Checking supplier if supplier has this product
+            List<Stock> stocks = _stockRepo.findAllBySupplierId(orderCreateDto.getSupplierId());
 
-            if(stock.getQuantity() < orderItem.getQuantity()){
-                throw new OutOfStockException("Quantity of orderItem with ID: " + orderItem.getId() + " can not greater than " +  stock.getQuantity());
+            if(stocks.isEmpty()){
+                throw new ResourceNotFound("Supplier with ID: " + orderCreateDto.getSupplierId() + " not found in inventory.");
+            }
+
+            boolean isAvailableItem = false;
+            for (Stock stock : stocks){
+
+                if(stock.getProductId().equals(orderItem.getProductId())) {
+
+                    if(stock.getQuantity() < orderItem.getQuantity()){
+                        throw new OutOfStockException("Quantity of Product with ID: " + orderItem.getProductId() + " can not greater than " +  stock.getQuantity());
+                    }
+
+                    isAvailableItem = true;
+                    break;
+                }
+            }
+
+            //  Checking stock if product is available
+            if(!isAvailableItem){
+               throw new ResourceNotFound("Supplier with ID " + orderCreateDto.getSupplierId()  + " does not contain product with ID: " + orderItem.getProductId());
             }
 
             orderItems.add(orderItem);
         }
 
         order.setOrderItems(orderItems);
-        // Save the order and order items to the database
-        // Update stock after
 
+        // Save the order and order items to the database
         _orderRepo.save(order);
         _orderItemRepo.saveAll(orderItems);
 
         // Update stock after making an order
         for (OrderItem orderItem : order.getOrderItems()){
-            Stock stock = _stockRepo.findByProductId(orderItem.getProductId()).orElseThrow(() -> new ResourceNotFound("OrderItem with ID: " + orderItem.getId() + " not found in inventory."));
-
+            Stock stock = _stockRepo.findByProductId(orderItem.getProductId())
+                    .orElseThrow(() -> new ResourceNotFound("OrderItem with ID: " + orderItem.getId() + " not found in inventory."));
             stock.setQuantity(stock.getQuantity() - orderItem.getQuantity());
+
+            if(stock.getQuantity() < 2){
+                throw new OutOfStockException("Quantity of Product with ID: " + stock.getProductId() + " are very low!");
+            }
             _stockRepo.save(stock);
         }
 
@@ -110,8 +134,11 @@ public class OrderService implements IOrderService {
         OffsetPage pageable = new OffsetPage(limit, offset);
 
         Page<Order> orders = _orderRepo.findAll(pageable);
+        System.out.println(orders.getTotalElements());
+        List<OrderReadDto> orderReadDtos = orders.stream().map(order ->
+             _orderMapper.toOrderReadDto(order)
+        ).collect(Collectors.toList());
 
-        List<OrderReadDto> orderReadDtos = orders.stream().map(order -> _orderMapper.toOrderReadDto(order)).collect(Collectors.toList());
 
         return new PaginationPage<OrderReadDto>()
                 .setLimit(orders.getSize())
@@ -123,13 +150,18 @@ public class OrderService implements IOrderService {
     @Override
     public OrderReadDto getOrderById(UUID id) {
         Order order = _orderRepo.findById(id).orElseThrow(() -> new ResourceNotFound("Order not found with ID: " + id));
-
+        System.out.println(order.getId());
         return _orderMapper.toOrderReadDto(order);
     }
 
     @Override
     public void cancelOrder(UUID id) {
         Order order = _orderRepo.findById(id).orElseThrow(() -> new ResourceNotFound("Order not found with ID: " + id));
+        System.out.println(order.getId());
+
+        for (OrderItem orderItem : order.getOrderItems()){
+            _orderItemRepo.deleteById(orderItem.getId());
+        }
 
         // Delete in Database
         _orderRepo.deleteById(id);

@@ -15,4 +15,5 @@ public interface IStockRepo {
     void deleteById(UUID id);
     Optional<Stock> findByProductId(UUID productId);
     Optional<Page<Stock>> findAllStockBySupplierId(UUID supplierId, OffsetPage pageable);
+    List<Stock> findAllBySupplierId(UUID supplierId);
 }

@@ -14,7 +14,6 @@ import java.util.UUID;
 @Getter
 @Setter
 public class StockCreateDto {
-
     @NotNull
     private UUID productId;
 

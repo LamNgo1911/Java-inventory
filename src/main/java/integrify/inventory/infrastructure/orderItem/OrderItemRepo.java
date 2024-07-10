@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 @Repository
 public class OrderItemRepo implements IOrderItemRepo {
+
     @Autowired
     private OrderItemJpaRepo _orderItemJpaRepo;
 
@@ -38,7 +38,7 @@ public class OrderItemRepo implements IOrderItemRepo {
     }
 
     @Override
-    public void saveAll(Set<OrderItem> orderItems) {
+    public void saveAll(List<OrderItem> orderItems) {
         _orderItemJpaRepo.saveAll(orderItems);
     }
 }

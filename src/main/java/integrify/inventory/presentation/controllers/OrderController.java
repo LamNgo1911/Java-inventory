@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -35,8 +36,10 @@ public class OrderController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/status")
-    public ResponseEntity<OrderReadDto> updateOrderStatus(@PathVariable UUID id, @RequestBody OrderStatusEnum status) {
-        OrderReadDto orderReadDto = _orderService.updateOrderStatus(id, status);
+    public ResponseEntity<OrderReadDto> updateOrderStatus(@PathVariable UUID id, @RequestBody Map<String, String> requestBody) {
+        String status = requestBody.get("status");
+        OrderStatusEnum orderStatus = OrderStatusEnum.valueOf(status);
+        OrderReadDto orderReadDto = _orderService.updateOrderStatus(id, orderStatus);
         return ResponseEntity.status(HttpStatus.OK).body(orderReadDto);
     }
 

@@ -45,4 +45,8 @@ public class StockRepo implements IStockRepo {
     public Optional<Page<Stock>> findAllStockBySupplierId(UUID supplierId, OffsetPage pageable) {
         return _stockJpaRepo.findAllStockBySupplierId(supplierId, pageable);
     }
+    @Override
+    public List<Stock> findAllBySupplierId(UUID supplierId) {
+        return _stockJpaRepo.findAllBySupplierId(supplierId);
+    }
 }

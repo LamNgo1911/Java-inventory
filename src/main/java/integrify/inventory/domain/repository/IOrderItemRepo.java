@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 public interface IOrderItemRepo {
@@ -14,5 +13,5 @@ public interface IOrderItemRepo {
     Optional<OrderItem> findById(UUID id);
     Page<OrderItem> findAll(OffsetPage pageable);
     void deleteById(UUID id);
-    void saveAll(Set<OrderItem> orderItems);
+    void saveAll(List<OrderItem> orderItems);
 }
