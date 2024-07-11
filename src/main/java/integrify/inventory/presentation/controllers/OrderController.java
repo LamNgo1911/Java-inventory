@@ -5,7 +5,10 @@ import integrify.inventory.application.dtos.order.OrderReadDto;
 import integrify.inventory.application.services.order.OrderService;
 import integrify.inventory.application.shared.PaginationPage;
 import integrify.inventory.domain.OrderStatusEnum;
+import integrify.inventory.infrastructure.email.EmailService;
+import integrify.inventory.infrastructure.email.EmailServiceEnum;
 import integrify.inventory.presentation.shared.SuccessResponseEntity;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,21 +28,29 @@ public class OrderController {
     @Autowired
     private OrderService _orderService;
 
-
+    @Autowired
+    private EmailService _emailService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<OrderReadDto> createOrder(@RequestBody @Valid OrderCreateDto orderCreateDto) {
         OrderReadDto orderReadDto = _orderService.createOrder(orderCreateDto);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(orderReadDto);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/status")
-    public ResponseEntity<OrderReadDto> updateOrderStatus(@PathVariable UUID id, @RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<OrderReadDto> updateOrderStatus(@PathVariable UUID id, @RequestBody Map<String, String> requestBody) throws MessagingException {
         String status = requestBody.get("status");
         OrderStatusEnum orderStatus = OrderStatusEnum.valueOf(status);
         OrderReadDto orderReadDto = _orderService.updateOrderStatus(id, orderStatus);
+
+        // Sending email to customer when an order is shipped
+        if(orderReadDto.getStatus().equals(OrderStatusEnum.SHIPPED)){
+            _emailService.sendHtmlEmail(EmailServiceEnum.UPDATEORDERSTATUS);
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(orderReadDto);
     }
 
@@ -51,6 +62,7 @@ public class OrderController {
         List<OrderReadDto> ordersList = new ArrayList<>(orders.getRecords());
         SuccessResponseEntity<OrderReadDto> successResponseEntity = new SuccessResponseEntity<>();
         successResponseEntity.setData(ordersList);
+
         return ResponseEntity.ok(successResponseEntity);
     }
 
@@ -58,6 +70,7 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<OrderReadDto> getOrderById(@PathVariable UUID id) {
         OrderReadDto orderReadDto = _orderService.getOrderById(id);
+
         return ResponseEntity.ok(orderReadDto);
     }
 

@@ -16,8 +16,11 @@ import integrify.inventory.domain.repository.IOrderItemRepo;
 import integrify.inventory.domain.repository.IOrderRepo;
 
 import integrify.inventory.domain.repository.IStockRepo;
+import integrify.inventory.infrastructure.email.EmailService;
+import integrify.inventory.infrastructure.email.EmailServiceEnum;
 import integrify.inventory.presentation.errorHandlers.OutOfStockException;
 import integrify.inventory.presentation.errorHandlers.ResourceNotFound;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ValidationException;
 import jakarta.validation.Validator;
@@ -47,6 +50,9 @@ public class OrderService implements IOrderService {
 
     @Autowired
     private Validator validator;
+
+    @Autowired
+    private EmailService _emailService;
 
     @Override
     @Transactional
@@ -111,8 +117,13 @@ public class OrderService implements IOrderService {
                     .orElseThrow(() -> new ResourceNotFound("OrderItem with ID: " + orderItem.getId() + " not found in inventory."));
             stock.setQuantity(stock.getQuantity() - orderItem.getQuantity());
 
+        //  Sending notification for supplier when a stock is < 2
             if(stock.getQuantity() < 2){
-                throw new OutOfStockException("Quantity of Product with ID: " + stock.getProductId() + " are very low!");
+                try {
+                    _emailService.sendHtmlEmail(EmailServiceEnum.LOWSTOCK);
+                } catch (MessagingException e) {
+                    throw new RuntimeException(e);
+                }
             }
             _stockRepo.save(stock);
         }
@@ -134,7 +145,7 @@ public class OrderService implements IOrderService {
         OffsetPage pageable = new OffsetPage(limit, offset);
 
         Page<Order> orders = _orderRepo.findAll(pageable);
-        System.out.println(orders.getTotalElements());
+
         List<OrderReadDto> orderReadDtos = orders.stream().map(order ->
              _orderMapper.toOrderReadDto(order)
         ).collect(Collectors.toList());
@@ -150,14 +161,13 @@ public class OrderService implements IOrderService {
     @Override
     public OrderReadDto getOrderById(UUID id) {
         Order order = _orderRepo.findById(id).orElseThrow(() -> new ResourceNotFound("Order not found with ID: " + id));
-        System.out.println(order.getId());
+
         return _orderMapper.toOrderReadDto(order);
     }
 
     @Override
     public void cancelOrder(UUID id) {
         Order order = _orderRepo.findById(id).orElseThrow(() -> new ResourceNotFound("Order not found with ID: " + id));
-        System.out.println(order.getId());
 
         for (OrderItem orderItem : order.getOrderItems()){
             _orderItemRepo.deleteById(orderItem.getId());
