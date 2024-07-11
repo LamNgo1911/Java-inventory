@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,5 +42,10 @@ public class OrderRepo implements IOrderRepo {
     @Override
     public void deleteById(UUID id) {
         _orderJpaRepo.deleteById(id);
+    }
+
+    @Override
+    public List<Order> findAllByDateRange(LocalDate startDate, LocalDate endDate) {
+        return _orderJpaRepo.findAllByDateRange(startDate, endDate);
     }
 }

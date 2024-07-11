@@ -30,6 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -65,7 +68,7 @@ public class OrderService implements IOrderService {
         }
 
         Order order = _orderMapper.toOrder(orderCreateDto);
-        order.setOrderDate(new Date());
+        order.setOrderDate(LocalDate.now());
         // Create order items
         List<OrderItemCreateDto> orderItemCreateDtos = orderCreateDto.getOrderItemCreateDtoList();
 
@@ -175,6 +178,54 @@ public class OrderService implements IOrderService {
 
         // Delete in Database
         _orderRepo.deleteById(id);
+    }
+
+    @Override
+    public List<OrderReadDto> getOrdersByCurrentDay() {
+
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = startDate.plusDays(1);
+
+        // Retrieve orders using the startDate and endDate
+        List<Order> orders = _orderRepo.findAllByDateRange(startDate, endDate);
+        List<OrderReadDto> orderReadDtoList = new ArrayList<>();
+        for (Order order : orders){
+            orderReadDtoList.add(_orderMapper.toOrderReadDto(order));
+        }
+
+        return orderReadDtoList;
+    }
+
+    @Override
+    public List<OrderReadDto> getOrdersByCurrentWeek() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate startDate = currentDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate endDate = currentDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY)).plusDays(1);
+
+        // Retrieve orders using the startDate and endDate
+        List<Order> orders = _orderRepo.findAllByDateRange(startDate, endDate);
+        List<OrderReadDto> orderReadDtoList = new ArrayList<>();
+        for (Order order : orders){
+            orderReadDtoList.add(_orderMapper.toOrderReadDto(order));
+        }
+
+        return orderReadDtoList;
+    }
+
+    @Override
+    public List<OrderReadDto> getOrdersByCurrentMonth() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate startDate = currentDate.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate endDate = currentDate.with(TemporalAdjusters.firstDayOfNextMonth());
+
+        // Retrieve orders using the startDate and endDate
+        List<Order> orders = _orderRepo.findAllByDateRange(startDate, endDate);
+        List<OrderReadDto> orderReadDtoList = new ArrayList<>();
+        for (Order order : orders){
+            orderReadDtoList.add(_orderMapper.toOrderReadDto(order));
+        }
+
+        return orderReadDtoList;
     }
 }
 

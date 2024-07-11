@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,7 +26,7 @@ public class Order {
 
     @Column(nullable = false)
     @NotNull(message = "Order date must not be null.")
-    private Date orderDate;
+    private LocalDate orderDate;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

@@ -13,9 +13,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -27,7 +26,7 @@ public class OrderReadDto {
     private UUID id;
 
     @NotNull
-    private Date orderDate;
+    private LocalDate orderDate;
 
     @NotNull
     @Enumerated(EnumType.STRING)
