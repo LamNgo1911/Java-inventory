@@ -48,4 +48,9 @@ public class OrderRepo implements IOrderRepo {
     public List<Order> findAllByDateRange(LocalDate startDate, LocalDate endDate) {
         return _orderJpaRepo.findAllByDateRange(startDate, endDate);
     }
+
+    @Override
+    public List<Order> findAllBySupplierId(UUID supplierId) {
+        return _orderJpaRepo.findAllBySupplierId(supplierId);
+    }
 }

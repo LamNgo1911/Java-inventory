@@ -8,8 +8,11 @@ import integrify.inventory.application.dtos.supplier.SupplierReadDto;
 import integrify.inventory.application.dtos.supplier.SupplierUpdateDto;
 import integrify.inventory.application.shared.OffsetPage;
 import integrify.inventory.application.shared.PaginationPage;
+import integrify.inventory.domain.model.Order;
 import integrify.inventory.domain.model.Stock;
 import integrify.inventory.domain.model.Supplier;
+import integrify.inventory.domain.repository.IOrderRepo;
+import integrify.inventory.domain.repository.IStockRepo;
 import integrify.inventory.domain.repository.ISupplierRepo;
 import integrify.inventory.presentation.errorHandlers.BadRequestException;
 import integrify.inventory.presentation.errorHandlers.ResourceNotFound;
@@ -36,6 +39,12 @@ public class SupplierService implements ISupplierService{
 
     @Autowired
     private ISupplierRepo _supplierRepo;
+
+    @Autowired
+    private IStockRepo _stockRepo;
+
+    @Autowired
+    private IOrderRepo _orderRepo;
 
     @Override
     public SupplierReadDto createSupplier(SupplierCreateDto supplierCreateDto) {
@@ -103,6 +112,11 @@ public class SupplierService implements ISupplierService{
         Supplier supplier = _supplierRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Supplier not found with ID: " + id));
 
+        List<Order> orders = _orderRepo.findAllBySupplierId(id);
+
+        for (Order order: orders){
+            _orderRepo.deleteById(order.getId());
+        }
         _supplierRepo.deleteById(id);
     }
 }

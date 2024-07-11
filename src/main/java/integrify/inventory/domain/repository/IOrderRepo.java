@@ -16,4 +16,5 @@ public interface IOrderRepo {
     public Page<Order> findAll(OffsetPage pageable);
     public void deleteById(UUID id);
     public List<Order> findAllByDateRange( LocalDate startDate, LocalDate endDate);
+    List<Order> findAllBySupplierId(UUID supplierId);
 }

@@ -15,4 +15,6 @@ import java.util.UUID;
 public interface OrderJpaRepo extends JpaRepository<Order, UUID> {
     @Query("SELECT o FROM Order o WHERE o.orderDate >= :startDate AND o.orderDate < :endDate")
     List<Order> findAllByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    List<Order> findAllBySupplierId(UUID supplierId);
 }
